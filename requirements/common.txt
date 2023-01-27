@@ -4,3 +4,5 @@ pytz==2022.6
 sqlparse==0.4.3
 typing_extensions==4.4.0
 django-bootstrap4
+pillow
+django-pydenticon
