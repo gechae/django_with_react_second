@@ -22,6 +22,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-aaj#n=y$zx9^j8!d6u*qn0wm-pqsfvp*n#5gzof@ep3iwsve3g'
 
+# ADMINS
+ADMINS = [
+    ('Kwangeun Chae', 'light03@naver.com')
+]
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -146,3 +151,18 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # django-debug-toolbar
 INTERNAL_IPS = ['127.0.0.1']
+
+
+# Email with SednGrid
+SENDGRID_API_KEY = os.environ.get('SENDGRID_API_KEY', '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')
+EMAIL_HOST = "smtp.sendgrid.net"
+EMAIL_HOST_USER = 'apikey'
+EMAIL_HOST_PASSWORD = SENDGRID_API_KEY
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+"""
+from django.core.mail import send_mail
+send_mail("Hello Title", "Hello Content", "light03@naver.com", ["cls@emforce.co.kr"], fail_silently=False)
+"""
+
+WELCOME_EMAIL_SENDER = 'light03@naver.com'
