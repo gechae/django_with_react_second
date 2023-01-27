@@ -16,6 +16,7 @@ class SignupForm(UserCreationForm):
         model = User
         fields = ['username', 'email', 'first_name', 'last_name']
 
+    # 이메일 중복 유효셩
     def clean_email(self):
         email = self.cleaned_data.get('email')
         if email:

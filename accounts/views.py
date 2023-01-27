@@ -13,7 +13,7 @@ def signup(request):
         if form.is_valid():
             form.save()
             messages.success(request, '회원가입 환영합니다.')
-            next_url = request.get('next', '/')
+            next_url = request.GET.get('next', '/')
             return redirect(next_url)
     else:
         form = SignupForm()
