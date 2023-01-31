@@ -1,8 +1,11 @@
+import datetime
+
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.shortcuts import render, redirect, get_object_or_404
+from django.utils import timezone
 
 from instagram.form import PostForm
 from instagram.models import Tag, Post
@@ -11,11 +14,13 @@ from instagram.models import Tag, Post
 # Create your views here.
 
 def index(request):
+    timesince = timezone.now() - datetime.timedelta(days=3)
     post_list = Post.objects.all()\
         .filter(
         Q(author=request.user) |
-        Q(author__in=request.user.following_set.all())
-    )
+        Q(author__in=request.user.following_set.all()))\
+        .filter(created_at__gte=timesince)
+
     suggested_user_list = get_user_model().objects.all()\
         .exclude(pk=request.user.pk)\
         .exclude(pk__in=request.user.following_set.all())[:3]

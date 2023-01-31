@@ -6,9 +6,15 @@ from django.urls import reverse
 
 
 # Create your models here.
+class BaseModel(models.Model):
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        # 해당 모델에 대해 마이그레이션하지 않는다.
+        abstract = True
 
-class Post(models.Model):
+class Post(BaseModel):
     author = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE
