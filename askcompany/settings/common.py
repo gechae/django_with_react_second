@@ -47,7 +47,8 @@ INSTALLED_APPS = [
     'bootstrap4',
     'django_pydenticon',
     # Locals Apps
-    'accounts'
+    'accounts',
+    'instagram'
 ]
 
 MIDDLEWARE = [
@@ -155,7 +156,7 @@ INTERNAL_IPS = ['127.0.0.1']
 
 
 # Email with SednGrid
-SENDGRID_API_KEY = os.environ.get('SENDGRID_API_KEY')
+SENDGRID_API_KEY = os.environ.get('SENDGRID_API_KEY', '')
 EMAIL_HOST = "smtp.sendgrid.net"
 EMAIL_HOST_USER = 'apikey'
 EMAIL_HOST_PASSWORD = SENDGRID_API_KEY
@@ -167,3 +168,5 @@ send_mail("Hello Title", "Hello Content", "light03@naver.com", ["cls@emforce.co.
 """
 
 WELCOME_EMAIL_SENDER = 'light03@naver.com'
+
+LOGIN_REDIRECT_URL = "/"

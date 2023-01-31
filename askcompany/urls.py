@@ -27,6 +27,7 @@ urlpatterns = [
     path('identicon/image/<path:data>/', pydenticon_image, name='pydenticon_image'),
     # login_required : 로그인 검증로직 로그인이 되어야 'root.html'로 이동
     path('', login_required(TemplateView.as_view(template_name='root.html')), name='root'),
+    path('', include('instagram.urls')),
 
 ]
 
