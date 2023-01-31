@@ -29,7 +29,6 @@ class Post(models.Model):
         return self.caption
 
     def extract_tag_list(self):
-
         tag_name_list = re.findall(r"#([a-zA-Z\dr-힣]+)", self.caption)
         tag_list = list()
         for tag_name in tag_name_list:
@@ -37,8 +36,13 @@ class Post(models.Model):
             tag_list.append(tag)
         return tag_list
 
-    # def get_absolute_url(self):
-    #     return reverse("", kwargs={"pk": self.pk})
+    """
+    어떠한 모델에 대해서 detail 뷰를 만들게 되면 get_absolute_url() 멤버 함수를 무조건 선언
+    resolve_url(모델 인스턴스), redirect(모델 인스턴스) 를 통해서 모델 인스턴스의 get_absolute_url() 함수를 자동으로 호출
+    resolve_url() 함수는 가장 먼저 get_absolute_url 함수의 존재 여부를 체크하고, 존재하면 호출하며 그 리턴값으로 URL을 사용
+    """
+    def get_absolute_url(self):
+        return reverse("instagram:post_detail", args=[self.pk])
 
 
 class Tag(models.Model):
