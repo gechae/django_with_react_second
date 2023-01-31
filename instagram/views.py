@@ -9,6 +9,10 @@ from instagram.models import Tag, Post
 
 # Create your views here.
 
+def index(request):
+    return render(request, 'instagram/index.html', {
+
+    })
 
 @login_required
 def post_new(request):
