@@ -23,14 +23,10 @@
             {% endif %}
         </div>
 
-        <div class="comment-list mt-3 mb-3">
+        <div id="post-{{ post.pk }}-commnet-list" class="comment-list mt-3 mb-3">
             {#   comment    #}
             {% for comment in post.comment_set.all %}
-                <div class="comment">
-                    <strong>{{ comment.author }}</strong>
-                    {{ comment.message }}
-                    <small class="text-muted">{{ comment.created_at|naturaltime }}</small>
-                </div>
+                {% include "instagram/_comment.html" %}
             {% endfor %}
         </div>
 
@@ -54,12 +50,42 @@
     <div class="card-footer">
         {#   댓글     #}
 {#        <a href="{% url "instagram:comment_new" post.pk %}">댓글 쓰기</a>#}
-        <form action="{% url "instagram:comment_new" post.pk %}" method="POST">
+        <form id="post-{{ post.pk }}-comment-form" action="{% url "instagram:comment_new" post.pk %}" method="POST">
             {% csrf_token %}
             {% bootstrap_form comment_form %}
             <div class="d-grid gap-2">
                 <input type="submit" value="댓글 쓰기" class="btn btn-primary btn-block" />
             </div>
         </form>
+
+
+        <script>
+            $(function () {
+                var form_id = "post-{{ post.pk }}-comment-form";
+                $("#" + form_id).submit(function (e) {
+                    e.preventDefault();
+
+                     var options = {
+                            success: function (responseText, statusText, xhr, $form) {
+                                console.group('ajaxSubmit response')
+                                console.log(responseText)
+                                console.log(statusText)
+                                console.log(xhr)
+                                console.log($form)
+                                console.groupEnd()
+
+                                $("#post-{{ post.pk }}-commnet-list").prepend(responseText)
+                            }
+                        }
+
+                    {# submit안에서 this: 자바스크립트는 function을 사용하면 대상이 바뀐다#}
+                    {# 밑에 처럽 랩핑을 해줘야 jquery 객체가 된다#}
+                    $(this).ajaxSubmit(options);
+
+                    console.log("submit!!!");
+                });
+                console.log("document ready")
+            });
+        </script>
     </div>
 </div>

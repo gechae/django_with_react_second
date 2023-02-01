@@ -105,6 +105,11 @@ def comment_new(request, post_pk):
             comment.post = post
             comment.author = request.user
             comment.save()
+            # 요청 데이터가 ajax 경우
+            if request.is_ajax():
+                return render(request, "instagram/_comment.html", {
+                    'comment': comment
+                })
             return redirect(comment.post)
     else:
        form = CommentForm()
