@@ -1,4 +1,4 @@
-{% load instagram_tags %}
+{% load instagram_tags humanize %}
 <div class="card">
     <div class="card-header">
         <img src="{{ post.author.avatar_url }}" style="width: 32px; height: 32px"/>
@@ -7,23 +7,52 @@
         </a>
     </div>
     <div class="card-body">
+        {#  사진  #}
         <img src="{{ post.photo.url }}" style="width: 100%;" />
-        {% for tag in post.tag_set.all %}
-            <span class="badge text-bg-primary">
-                #{{ tag.name }}
-            </span>
-        {% endfor %}
+
+        <div>
+            {#  좋아요  #}
+            {% if post|is_like_user:user %}
+                <a href="{% url "instagram:post_unlike" post.pk %}" style="color: inherit">
+                    <i class="fa fa-heart" aria-hidden="true">좋아요 해제</i>
+                </a>
+            {% else %}
+                <a href="{% url "instagram:post_like" post.pk %}" style="color: inherit">
+                   <i class="fa fa-heart-o" aria-hidden="true">좋아요</i>
+                </a>
+            {% endif %}
+        </div>
+
+        <div class="comment-list mt-3 mb-3">
+            {#   comment    #}
+            {% for comment in post.comment_set.all %}
+                <div class="comment">
+                    <strong>{{ comment.author }}</strong>
+                    {{ comment.message }}
+                    <small class="text-muted">{{ comment.created_at|naturaltime }}</small>
+                </div>
+            {% endfor %}
+        </div>
+
+        <div>
+            {#   Tag     #}
+            {% for tag in post.tag_set.all %}
+                <span class="badge text-bg-primary">
+                    #{{ tag.name }}
+                </span>
+            {% endfor %}
+        </div>
+
+        <div>
+            <a href="{{ post.get_absolute_url }}" style="" class="text-muted">
+                <small>
+                    {{ post.created_at|naturaltime }}
+                </small>
+            </a>
+        </div>
     </div>
     <div class="card-footer">
-        {% if post|is_like_user:user %}
-            <a href="{% url "instagram:post_unlike" post.pk %}" style="color: inherit">
-                <i class="fa fa-heart" aria-hidden="true">좋아요 해제</i>
-            </a>
-        {% else %}
-            <a href="{% url "instagram:post_like" post.pk %}" style="color: inherit">
-               <i class="fa fa-heart-o" aria-hidden="true">좋아요</i>
-            </a>
-        {% endif %}
-
+        {#   댓글     #}
+        <a href="{% url "instagram:comment_new" post.pk %}">댓글 쓰기</a>
     </div>
 </div>
